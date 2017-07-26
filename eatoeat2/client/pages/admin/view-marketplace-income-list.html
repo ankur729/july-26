@@ -1,0 +1,194 @@
+
+<!-- main container start herer -->
+<div class="main-container dashboard" ng-controller="admin_controller">
+
+<div ng-include="'pages/admin/admin-left-menu.html'"></div>
+
+	<div class="work-pannel" ng-init="fetch_income_detail()">
+		<!-- top header start here -->
+		<div class="top-header">
+			<div class="container">
+				<ul class="menu">
+					<li class="logout-btn"><a href="#0" class="main-link">Logout</a></li>
+				</ul>
+			</div>
+		</div>
+		<!-- top header end here -->
+
+		<div class="container">
+			<div class="view-pannel">
+
+				<!-- page bar start here -->
+				<div class="page-name-bar">
+					<h2 class="page-name">Income</h2>
+					<ul class="breadcrumbs">
+						<li class="list"><a href="#0" class="link">Home</a></li>
+						<li class="list">Income</li>
+					</ul>
+				</div>
+				<!-- page bar end here -->
+
+				<div class="table-view">
+					<h3 class="head-name">Income</h3>
+
+					<div class="search-model">
+							<div class="search-div">
+							<label class="search-name">Order Id</label>
+							<input type="text" name="" class="input-box" placeholder="Total Order" ng-model="forder.order_id">
+						</div>	
+						<div class="search-div">
+							<label class="search-name">Cook Name</label>
+							<input type="text" name="" class="input-box" placeholder="Cook Name" ng-model="forder.cook_name">
+						</div>
+					
+							<div class="search-div">
+							<label class="search-name">Payment Mode</label>
+						
+							<select class="select-option left" ng-model="forder.pay_mode">
+								<option value="">--Select--</option>
+								<option value="cod">COD</option>
+								<option value="wallet">Wallet</option>
+								<option value="online">Online</option>
+						
+							</select>
+						</div>
+							<div class="search-div">
+
+								<label class="search-name" for="pickup">Order date From:</label>
+
+						<input type="text" class="input-box" id="pickup" data-date-range-end="#return">
+
+
+							<!--<label class="search-name">From Date</label>
+							<input type="text" name="" class="input-box" placeholder="From (NOT ACTIVE)" >-->
+						</div>
+						<div class="search-div">
+						<label class="search-name" for="return">Order date To:</label>
+
+						<input class="input-box" type="text" id="return" data-date-range-start="#pickup">
+
+						</div>
+
+						<div class="search-div">
+								<button ng-click="sort_income_orders_by_date()">Search </button>
+						</div>
+						
+					</div>
+
+
+					<ul class="cat-listing-show">
+						<!-- heading part start here-->
+						<li class="list main-name">
+							<div class="coloum-div">
+								<span class="title">Order Id</span>
+							</div>
+								<div class="coloum-div col-px-150 center">
+								<span class="title">Cook Name</span>
+							</div>
+							<div class="coloum-div col-md-10 center">
+								<span class="title">Date</span>
+							</div>
+
+							<div class="coloum-div col-px-100 center">
+								<span class="title">Discount <br> Amt.</span>
+							</div>
+
+
+							<div class="coloum-div col-md-10 center">
+								<span class="title">Payment Mode</span>
+							</div>
+							<div class="coloum-div col-md-6 center">
+								<span class="title">Total Value</span>
+							</div>
+							<div class="coloum-div col-md-6 center">
+								<span class="title">Food Value</span>
+							</div>
+							<div class="coloum-div col-md-6 center">
+								<span class="title">Delivery Charge</span>
+							</div>
+							<div class="coloum-div col-px-50 center">
+								<span class="title">Commission</span>
+							</div>
+							<div class="coloum-div col-md-10 center">
+								<span class="title">Pay to vendor</span>
+							</div>
+							
+							<div class="coloum-div col-px-100 center">
+								<span class="title">Payment <br> Status</span>
+							</div>
+
+							
+						
+						</li>
+					</ul>
+					<!-- heading part end here-->
+					<ul class="cat-listing-show list-group">
+						<li class="list" ng-repeat="income in income_list_view | filter:{ order_id:forder.order_id } | filter:{ cook_name:forder.cook_name } | filter:{ pay_mode:forder.pay_mode } ">
+							<div class="coloum-div">
+								<span class="title">{{income.order_id}}</span>
+							</div>
+								<div class="coloum-div  col-px-150 center">
+								<span class="title"> {{income.cook_name}}</span>
+							</div>
+							<div class="coloum-div col-md-10 center">
+								<span class="title"> {{income.date}} </span>
+							</div>
+
+							<div class="coloum-div col-px-100 center">
+								<span class="title"> {{income.discount_amt}}</span>
+							</div>
+
+							<div class="coloum-div col-md-10 center">
+								<span class="title"> {{income.pay_mode | uppercase}}</span>
+							</div>
+							<div class="coloum-div col-md-6 center">
+								<span class="title">Total Value</span>
+							</div>
+							<div class="coloum-div col-md-6 center">
+								<span class="title">Rs. {{income.food_total_price}}</span>
+							</div>
+								<div class="coloum-div col-md-6 center">
+								<span class="title">Rs. {{income.items[0].delivery_charge}}</span>
+							</div>
+								<div class="coloum-div col-px-50 center">
+								<span class="title">Rs. {{income.tax_rate}} </span>
+							</div>
+								<div class="coloum-div  col-md-10 center">
+								<span class="title"> Rs. {{income.payble_amt}}</span>
+							</div>
+						
+							<div class="coloum-div col-px-100 center">
+								<span class="title">Unpaid</span>
+							</div>
+
+							<!--
+								<div class="coloum-div col-md-10 center">
+								<span class="title"> 0.00</span>
+							</div>
+							<div class="coloum-div col-md-15 center">
+								<span class="title"> {{income.cook_amt}}</span>
+							</div>
+							<div class="coloum-div center col-px-100">
+								<a  class="view-btn" ng-click="pay_cook_commission(income)">Pay {{income.cook_amt}}</a>
+							</div>-->
+						</li>
+					
+
+					</ul>
+				</div>
+			</div>
+		</div>
+
+	</div>
+</div>
+
+<script>
+
+
+
+	$("#pickup").datepicker({
+
+});
+
+</script>
+<!-- main container end herer -->
